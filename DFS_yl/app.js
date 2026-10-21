@@ -8,9 +8,9 @@ const words = lines.slice(1, n + 1);
 
 // Iga märgi jaoks: sõnad, mis sellest algavad + sisse/välja astmed
 const adj = new Map(); // märk -> sõnade indeksid
-const inDeg = new Map();
-const outDeg = new Map();
-const inc = (m, k) => m.set(k, (m.get(k) || 0) + 1);
+const inDeg = new Map(); //mitu serva siseneb
+const outDeg = new Map(); //mitu väljub
+const inc = (m, k) => m.set(k, (m.get(k) || 0) + 1); //abifunktsioon
 
 words.forEach((w, i) => {
   const a = w[0];
@@ -23,6 +23,8 @@ words.forEach((w, i) => {
 
 function solve() {
   // 1) astmete kontroll
+  // igal tava tipul välja - sisse 0
+  //kui muu siis kas algus või lõpp
   const chars = new Set([...inDeg.keys(), ...outDeg.keys()]);
   let start = null;
   let plus = 0;
@@ -49,6 +51,7 @@ function solve() {
     const { v } = stack[stack.length - 1];
     const list = adj.get(v) || [];
     const p = ptr.get(v) || 0;
+    // tipust v väljub veel kasutamata sõna -> mine mööda seda edasi
     if (p < list.length) {
       ptr.set(v, p + 1);
       const e = list[p];
